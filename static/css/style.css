@@ -1,24 +1,5 @@
-body {
-    font-family: Arial, sans-serif;
-    transition: background-color 0.3s ease;
-}
 
-body.light-theme {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-body.dark-theme {
-    background-color: #121212;
-    color: #ffffff;
-}
-
-.boxed-text {
-    border: 2px solid currentColor;
-    padding: 15px;
-    margin-top: 20px;
-}
 [data-bs-theme="dark"] .btn-primary {
-    background-color: #6f42c1;
-    border-color: #6f42c1;
+    background-color: #4b3d8f;
+    border-color: #4b3d8f;
 }
