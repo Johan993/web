@@ -1,5 +1,133 @@
-
-[data-bs-theme="dark"] .btn-primary {
-    background-color: #4b3d8f;
-    border-color: #4b3d8f;
+:root {
+  --primary-color: #0d0c1d;
+  --secondary-color: #161b33;
+  --accent-color: #474973;
+  --light-bg: #fff;
+  --gray-bg: #f5f5f5;
+  --dark-blue: #0d0c1d;
+  --navy-blue: #161b33;
+  --dark-purple: #474973;
+  --light-gray: #a69cac;
+  --beige: #f1dac4;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--gray-bg) !important;
+  color: var(--dark-blue);
+}
+
+.navbar {
+  background-color: var(--primary-color) !important;
+}
+
+.navbar-brand,
+.nav-link {
+  color: #fff !important;
+}
+
+.sidebar {
+  background-color: var(--light-bg) !important;
+  border-right: 1px solid var(--light-gray) !important;
+  min-height: 100vh;
+  padding-top: 1rem;
+}
+
+.sidebar .nav-link {
+  color: var(--secondary-color) !important;
+}
+
+.sidebar .nav-link.active {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+}
+
+.content {
+  padding: 2rem;
+}
+
+
+.water-tracker .progress {
+  height: 2rem;
+  border-radius: 1rem;
+  background-color: var(--beige) !important;
+  border: 1px solid var(--dark-blue) !important;
+  overflow: hidden;
+}
+
+.water-tracker .progress-bar {
+  background-color: var(--accent-color) !important;
+}
+
+
+.habit-card {
+  border-radius: 1rem !important;
+  overflow: hidden;
+  background-color: var(--light-bg) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.habit-card .card-header {
+  background-color: var(--navy-blue) !important;
+  color: var(--beige) !important;
+  font-weight: 600;
+}
+
+.habit-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+  padding: 1rem;
+}
+
+.habit-calendar span {
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  background-color: var(--light-gray);
+  border-radius: 50%;
+}
+
+.add-habit {
+  border: 2px dashed var(--primary-color) !important;
+  border-radius: 1rem !important;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color) !important;
+  font-weight: 500;
+}
+
+
+.btn-outline-secondary {
+  color: var(--dark-blue) !important;
+  border-color: var(--dark-blue) !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--dark-blue) !important;
+  color: var(--light-bg) !important;
+}
+
+
+.card-body {
+  background-color: var(--light-bg) !important;
+  color: var(--dark-blue) !important;
+}
+
+
+.progress-bar {
+  background-color: var(--accent-color) !important;
+}
+.gradient-custom-3 {
+    background: linear-gradient(to right, 778da9, 415a77);
+}
+
+.gradient-custom-4 {
+    background: linear-gradient(to right, #778da9, #e0e1dd);
+}
+.card {
+    border-radius: 50%;
+}
+

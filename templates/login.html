@@ -1,33 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Авторизация</h1>
-<form action="" method="post">
-    {{ form.hidden_tag() }}
-        {{ form.csrf_token }}
-    {% if message %}
-    <div class="alert alert-danger" role="alert">{{ message }}</div>
-    {% endif %}
-    <p>
-        {{ form.email.label }}<br>
-        {{ form.email(class="form-control", type="email") }}<br>
-        {% for error in form.email.errors %}
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
+<section class="vh-100 bg-image"
+    style="background-image: url('https://img.freepik.com/free-photo/light-steel-blue-watercolor-background_53876-101917.jpg?t=st=1745509148~exp=1745512748~hmac=0d4ac69b7eafd19e79d5d99864bcccdf41b24e75b6371296fe4c133a1ef0e6a7&w=996');">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100" >
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card">
+                        <div class="card-body p-5" style="border-radius: 20px;">
+                            <h2 class="text-uppercase text-center mb-5">Авторизация</h2>
+
+                            <form action="" method="post">
+                                {{ form.hidden_tag() }}
+                                {{ form.csrf_token }}
+
+                                {% if message %}
+                                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                                {% endif %}
+
+                                <div class="form-outline mb-4">
+                                    {{ form.email(class="form-control form-control-lg", id="email") }}
+                                    <label for="email" class="form-label">{{ form.email.label }}</label>
+                                    {% for error in form.email.errors %}
+                                        <div class="alert alert-danger" role="alert">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+
+
+                                <div class="form-outline mb-4">
+                                    {{ form.password(class="form-control form-control-lg", id="password") }}
+                                    <label for="password" class="form-label">{{ form.password.label }}</label>
+                                    {% for error in form.password.errors %}
+                                        <div class="alert alert-danger" role="alert">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="form-check d-flex justify-content-center mb-5">
+                                    {{ form.remember_me() }}
+                                    <label class="form-check-label" for="remember_me">{{ form.remember_me.label }}</label>
+                                </div>
+
+
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+                                        Зарегистрироваться
+                                    </button>
+                                </div>
+
+                                <p class="text-center text-muted mt-5 mb-0">У вас уже есть аккаунт?
+                                    <a href="#!" class="fw-bold text-body"><u>Войти</u></a>
+                                </p>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    {% endfor %}
-    </p>
-    <p>
-        {{ form.password.label }}<br>
-        {{ form.password(class="form-control", type="password") }}<br>
-        {% for error in form.password.errors %}
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
-    </div>
-    {% endfor %}
-    </p>
-    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-    <div>{{ message }}</div>
-</form>
+</section>
 {% endblock %}
+
