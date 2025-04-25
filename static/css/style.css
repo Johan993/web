@@ -131,3 +131,16 @@ body {
     border-radius: 50%;
 }
 
+.bg-register {
+  background-image: url('https://img.freepik.com/free-photo/dried-leaves-gray-blank-background_53876-102451.jpg?t=st=1745608253~exp=1745611853~hmac=26ce214f8bce41c4a109c115cc98a7ae74a52fced96bdba1b2332025c5a75726&w=996');
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: var(--gray-bg); /* fallback if image fails */
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
