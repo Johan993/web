@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Трекинг воды{% endblock %}
+
+{% block content %}
+  <h2 class="water-tracker-title">Прогресс потребления воды</h2>
+
+  <div class="water-tracker mb-4">
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" style="width: 60%;">60%</div>
+    </div>
+  </div>
+
+  <div class="habit-card card mb-4">
+    <div class="card-header">Пить 2 литра воды</div>
+    <div class="card-body">
+      <p>Календарь выполнения:</p>
+      <div class="habit-calendar">
+        <span></span>
+        <span class="completed"></span>
+        <span></span>
+        <span class="completed"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+{% endblock %}

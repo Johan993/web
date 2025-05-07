@@ -83,5 +83,10 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/water")
+def water():
+    return render_template("water.html", title="Трекинг воды", flag=False)
+
+
 if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1')
+    app.run(port=8080, host='127.0.0.1')    
