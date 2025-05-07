@@ -1,44 +1,120 @@
+{% extends "base.html" %} {% block content %}
+Регистрация
+{{ form.hidden_tag() }} {% if message %}
+{{ message }}
+{% endif %}
+{{ form.email.label }}
+{{ form.email(class="form-control", type="email") }}
+{% for err in form.email.errors %}
+
+{{ err }}
+
+{% endfor %}
+{{ form.password.label }}
+{{ form.password(class="form-control", type="password") }}
+{% for err in form.password.errors %}
+
+{{ err }}
+
+{% endfor %}
+{{ form.password_repeat.label }}
+{{ form.password_repeat(class="form-control", type="password") }}
+{% for err in form.password_repeat.errors %}
+
+{{ err }}
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Регистрация</h1>
+  <h1>Регистрация</h1>
+  <form method="post">
     {{ form.hidden_tag() }}
     {% if message %}
+      <div class="alert alert-danger">{{ message }}</div>
     {% endif %}
     <p>
-        {{ form.email.label }}<br>
-        {{ form.email(class="form-control", type="email") }}<br>
-    {% endfor %}
+      {{ form.email.label }}<br>
+      {{ form.email(class="form-control", type="email") }}<br>
+      {% for err in form.email.errors %}
+        <p class="alert alert-danger">{{ err }}</p>
+      {% endfor %}
     </p>
     <p>
-        {{ form.password.label }}<br>
-        {{ form.password(class="form-control", type="password") }}<br>
-    {% endfor %}
+      {{ form.password.label }}<br>
+      {{ form.password(class="form-control", type="password") }}<br>
+      {% for err in form.password.errors %}
+        <p class="alert alert-danger">{{ err }}</p>
+      {% endfor %}
     </p>
     <p>
-        {{ form.password_repeat.label }}<br>
-        {{ form.password_repeat(class="form-control", type="password") }}<br>
-    {% endfor %}
+      {{ form.password_repeat.label }}<br>
+      {{ form.password_repeat(class="form-control", type="password") }}<br>
+      {% for err in form.password_repeat.errors %}
+        <p class="alert alert-danger">{{ err }}</p>
+      {% endfor %}
     </p>
     <p>
-        {{ form.surname.label }}<br>
-        {{ form.surname(class="form-control") }}<br>
-    {% endfor %}
+      {{ form.surname.label }}<br>
+      {{ form.surname(class="form-control") }}<br>
+      {% for err in form.surname.errors %}
+        <p class="alert alert-danger">{{ err }}</p>
+      {% endfor %}
     </p>
     <p>
-        {{ form.name.label }}<br>
-        {{ form.name(class="form-control") }}<br>
-    {% endfor %}
+      {{ form.name.label }}<br>
+      {{ form.name(class="form-control") }}<br>
+      {% for err in form.name.errors %}
+        <p class="alert alert-danger">{{ err }}</p>
+      {% endfor %}
     </p>
     <p>
-        {{ form.age.label }}<br>
-        {{ form.age(class="form-control") }}<br>
-    {% endfor %}
+      {{ form.age.label }}<br>
+      {{ form.age(class="form-control") }}<br>
+      {% for err in form.age.errors %}
+        <p class="alert alert-danger">{{ err }}</p>
+      {% endfor %}
     </p>
     <p>
-    {% endfor %}
+      {{ form.gender.label }}<br>
+      {{ form.gender(class="form-control") }}<br>
+      {% for err in form.gender.errors %}
+        <p class="alert alert-danger">{{ err }}</p>
+      {% endfor %}
     </p>
     <p>
+      {{ form.submit(class="btn btn-primary") }}
     </p>
-</form>
+  </form>
+{% endblock %}
+
+{% endfor %}
+{{ form.surname.label }}
+{{ form.surname(class="form-control") }}
+{% for err in form.surname.errors %}
+
+{{ err }}
+
+{% endfor %}
+{{ form.name.label }}
+{{ form.name(class="form-control") }}
+{% for err in form.name.errors %}
+
+{{ err }}
+
+{% endfor %}
+{{ form.age.label }}
+{{ form.age(class="form-control") }}
+{% for err in form.age.errors %}
+
+{{ err }}
+
+{% endfor %}
+{{ form.gender.label }}
+{{ form.gender(class="form-control") }}
+{% for err in form.gender.errors %}
+
+{{ err }}
+
+{% endfor %}
+{{ form.submit(class="btn btn-primary") }}
+
 {% endblock %}
