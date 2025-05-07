@@ -1,27 +1,3 @@
-{% extends "base.html" %} {% block content %}
-Регистрация
-{{ form.hidden_tag() }} {% if message %}
-{{ message }}
-{% endif %}
-{{ form.email.label }}
-{{ form.email(class="form-control", type="email") }}
-{% for err in form.email.errors %}
-
-{{ err }}
-
-{% endfor %}
-{{ form.password.label }}
-{{ form.password(class="form-control", type="password") }}
-{% for err in form.password.errors %}
-
-{{ err }}
-
-{% endfor %}
-{{ form.password_repeat.label }}
-{{ form.password_repeat(class="form-control", type="password") }}
-{% for err in form.password_repeat.errors %}
-
-{{ err }}
 {% extends "base.html" %}
 
 {% block content %}
@@ -84,37 +60,4 @@
       {{ form.submit(class="btn btn-primary") }}
     </p>
   </form>
-{% endblock %}
-
-{% endfor %}
-{{ form.surname.label }}
-{{ form.surname(class="form-control") }}
-{% for err in form.surname.errors %}
-
-{{ err }}
-
-{% endfor %}
-{{ form.name.label }}
-{{ form.name(class="form-control") }}
-{% for err in form.name.errors %}
-
-{{ err }}
-
-{% endfor %}
-{{ form.age.label }}
-{{ form.age(class="form-control") }}
-{% for err in form.age.errors %}
-
-{{ err }}
-
-{% endfor %}
-{{ form.gender.label }}
-{{ form.gender(class="form-control") }}
-{% for err in form.gender.errors %}
-
-{{ err }}
-
-{% endfor %}
-{{ form.submit(class="btn btn-primary") }}
-
 {% endblock %}
