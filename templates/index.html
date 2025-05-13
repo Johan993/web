@@ -6,38 +6,50 @@
   <section class="water-tracker mb-4">
     <h5>Трекер воды</h5>
     <div class="progress">
-      <div class="progress-bar" role="progressbar" style="width: 50%;"></div>
+      <div class="progress-bar" role="progressbar" style="width: {{ (water_amount / water_goal * 100) | round }}%;"></div>
     </div>
-    <small class="text-muted">250 мл из 2000 мл</small>
+    <small class="text-muted">{{ water_amount }} мл из {{ water_goal }} мл</small>
   </section>
 
-  <section class="habits">
+  <section class="habits mb-5">
     <h5>Ваши привычки</h5>
-    <div class="row gy-4">
-      <div class="col-lg-3 col-md-4">
-        <div class="card habit-card">
-          <div class="card-header">Чтение</div>
-          <div class="habit-calendar">
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span>
-          </div>
-          <div class="card-body text-center">
-            <button class="btn btn-sm btn-outline-secondary">Выполнено</button>
-            <button class="btn btn-sm btn-outline-secondary">Пропустить</button>
-          </div>
-        </div>
+
+    <form method="post" class="row g-2 mb-4">
+      {{ habit_form.hidden_tag() }}
+      <div class="col-auto flex-grow-1">
+        {{ habit_form.name(class="form-control", placeholder="Название привычки") }}
       </div>
-      <div class="col-lg-3 col-md-4">
-        <div class="add-habit">
-          Добавить привычку
-        </div>
+      <div class="col-auto">
+        {{ habit_form.submit(class="btn btn-primary") }}
       </div>
-    </div>
+    </form>
+
+    {% if habits %}
+      <div class="row gy-4">
+        {% for habit in habits %}
+          <div class="col-lg-3 col-md-4">
+            <div class="card habit-card h-100">
+              <div class="card-header bg-dark text-white">{{ habit.name }}</div>
+              <div class="habit-calendar p-3">
+                {% for i in range(28) %}
+                  <span class="me-1 mb-1 d-inline-block habit-day {{ 'done' if habit.days and habit.days[i] else '' }}"></span>
+                {% endfor %}
+              </div>
+              <div class="card-body text-center">
+                <form method="post" action="{{ url_for('mark_habit', habit_id=habit.id) }}" class="d-inline">
+                  <button name="action" value="done" class="btn btn-sm btn-outline-success">Выполнено</button>
+                </form>
+                <form method="post" action="{{ url_for('mark_habit', habit_id=habit.id) }}" class="d-inline ms-2">
+                  <button name="action" value="skip" class="btn btn-sm btn-outline-secondary">Пропустить</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">У вас пока нет привычек. Добавьте первую выше!</p>
+    {% endif %}
   </section>
 
   <section class="mt-5">
@@ -58,8 +70,9 @@
           <div class="card-body">
             <h6>Достижения</h6>
             <div class="d-flex flex-wrap gap-2">
-              <span class="badge bg-secondary">1 неделя без пропусков</span>
-              <span class="badge bg-secondary">10 дней подряд</span>
+              {% for ach in achievements %}
+                <span class="badge bg-secondary">{{ ach }}</span>
+              {% endfor %}
             </div>
           </div>
         </div>

@@ -1,25 +1,27 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 import logging
-
+from flask import request, flash, redirect, url_for
+from datetime import date
+from data.db_session import global_init, create_session
 from data import db_session
 from data.users import User
 from data.water import WaterIntake
 from forms.login import LoginForm
 from forms.register import RegisterForm
 from forms.water import WaterForm
+from data.habits import habit1
+from forms.habits import habitForm
+
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yoursecretkey'
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
-# Настройка логирования
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Инициализация БД
 db_session.global_init('db/mars_explorer.db')
 
-# Настройка Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -29,10 +31,37 @@ def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
-    return render_template('index.html', title="Главная")
+    db_sess = db_session.create_session()
 
+    habit_form = habitForm()
+    if habit_form.validate_on_submit():
+        new_habit = habit1(
+            name=habit_form.name.data,
+            user_id=current_user.id
+        )
+        db_sess.add(new_habit)
+        db_sess.commit()
+        return redirect(url_for('index'))
+
+    water = db_sess.query(WaterIntake).filter_by(user_id=current_user.id).first()
+    water_amount = water.amount if water else 0
+
+    user_habits = db_sess.query(habit1)\
+        .filter(habit1.user_id == current_user.id)\
+        .order_by(habit1.created_date.desc())\
+        .all()
+
+    return render_template(
+        'index.html',
+        title='Панель',
+        water_amount=water_amount,
+        water_goal=2000,
+        habit_form=habit_form,
+        habits=user_habits,
+    )
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -102,5 +131,30 @@ def water():
                            form=form,
                            records=records)
 
+@app.route('/habit/<int:habit_id>/mark', methods=['POST'])
+@login_required
+def mark_habit(habit_id):
+    db_sess = create_session()
+    habit = db_sess.get(habit1, habit_id)
+    if not habit or habit.user_id != current_user.id:
+        flash("Привычка не найдена.", "danger")
+        return redirect(url_for('index'))
+
+    action = request.form.get('action')
+    today = date.today()
+
+    if action == 'done':
+        habit.mark_done(today)
+        flash(f"«{habit.name}» отмечена как выполнена.", "success")
+    elif action == 'skip':
+        habit.mark_skipped(today)
+        flash(f"«{habit.name}» пропущена.", "warning")
+    else:
+        flash("Неизвестное действие.", "danger")
+
+    db_sess.commit()
+    return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=8080, host='127.0.0.1')
