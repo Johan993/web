@@ -40,7 +40,8 @@
         <ul class="nav flex-column">
           <li class="nav-item"><a class="nav-link active" href="#">Панель</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Привычки</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Вода</a></li>
+          <li class="nav-item"><a class="nav-link {% if request.endpoint == 'water' %}active{% endif %}"
+                                  href="{{ url_for('water') }}">Вода</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Статистика</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Настройки</a></li>
         </ul>

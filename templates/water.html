@@ -1,29 +1,25 @@
 {% extends "base.html" %}
-
-{% block title %}Трекинг воды{% endblock %}
-
 {% block content %}
-  <h2 class="water-tracker-title">Прогресс потребления воды</h2>
+  <h1>{{ title }}</h1>
 
-  <div class="water-tracker mb-4">
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" style="width: 60%;">60%</div>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+      {{ form.amount_ml.label }}<br>
+      {{ form.amount_ml(size=5) }}
+      {% for err in form.amount_ml.errors %}
+        <span class="text-danger">{{ err }}</span>
+      {% endfor %}
     </div>
-  </div>
+    <div class="mt-2">{{ form.submit(class="btn btn-primary") }}</div>
+  </form>
 
-  <div class="habit-card card mb-4">
-    <div class="card-header">Пить 2 литра воды</div>
-    <div class="card-body">
-      <p>Календарь выполнения:</p>
-      <div class="habit-calendar">
-        <span></span>
-        <span class="completed"></span>
-        <span></span>
-        <span class="completed"></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </div>
+  <h2 class="mt-4">Последние записи</h2>
+  <ul>
+    {% for r in records %}
+      <li>{{ r.timestamp.strftime('%Y-%m-%d %H:%M') }} — {{ r.amount_ml }} мл</li>
+    {% else %}
+      <li>Нет записей.</li>
+    {% endfor %}
+  </ul>
 {% endblock %}
