@@ -144,3 +144,6 @@ body {
   justify-content: center;
   padding: 2rem;
 }
+.habit-day { width:20px; height:20px; border-radius:4px; background:#e9ecef; }
+.habit-day.done { background:#28a745; }
+.habit-day.skipped { background:#6c757d; }

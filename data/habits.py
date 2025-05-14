@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Date, Enum, ForeignKey
 from sqlalchemy.orm import relationship
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import enum
 from .db_session import SqlAlchemyBase
 
@@ -12,14 +12,21 @@ class habit1(SqlAlchemyBase):
     __tablename__ = 'habits'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     name = Column(String, nullable=False)
-    created_date = Column(DateTime, default=datetime.utcnow)
+    created_date = Column(DateTime, default=datetime.utcnow, nullable=False)
 
-    days = relationship('HabitDay', back_populates='habit', cascade='all, delete-orphan')
+    days = relationship(
+        'HabitDay',
+        back_populates='habit',
+        cascade='all, delete-orphan',
+        order_by='HabitDay.date'
+    )
+
     user = relationship('User', back_populates='habits')
 
     def mark_done(self, mark_date: date):
+        """Пометить дату выполненной или добавить новую запись."""
         for d in self.days:
             if d.date == mark_date:
                 d.status = DayStatus.done
@@ -27,6 +34,7 @@ class habit1(SqlAlchemyBase):
         self.days.append(HabitDay(date=mark_date, status=DayStatus.done))
 
     def mark_skipped(self, mark_date: date):
+        """Пометить дату пропущенной или добавить новую запись."""
         for d in self.days:
             if d.date == mark_date:
                 d.status = DayStatus.skipped
@@ -37,7 +45,7 @@ class HabitDay(SqlAlchemyBase):
     __tablename__ = 'habit_days'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    habit_id = Column(Integer, ForeignKey('habits.id'))
+    habit_id = Column(Integer, ForeignKey('habits.id'), nullable=False)
     date = Column(Date, nullable=False)
     status = Column(Enum(DayStatus), nullable=False)
 
