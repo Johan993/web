@@ -144,21 +144,29 @@ def logout():
 @app.route('/water', methods=['GET', 'POST'])
 @login_required
 def water():
-    form = WaterForm()
     db_sess = db_session.create_session()
+    form = WaterForm()
+
     if form.validate_on_submit():
-        intake = WaterIntake(user_id=current_user.id, amount_ml=form.amount_ml.data)
+        intake = WaterIntake(
+            user_id=current_user.id,
+            amount=form.amount_ml.data
+        )
         db_sess.add(intake)
         db_sess.commit()
-        logger.info(f"Added water intake: {intake.amount_ml} ml for user {current_user.email}")
-        return redirect(url_for('water'))
-    if request.method == 'POST':
-        logger.warning(f"Form errors: {form.errors}")
-    records = db_sess.query(WaterIntake) \
-                     .filter(WaterIntake.user_id == current_user.id) \
-                     .order_by(WaterIntake.timestamp.desc()) \
-                     .all()
-    return render_template('water.html', title='Трекер воды', form=form, records=records)
+        return redirect(url_for('index'))
+
+    existing = db_sess.query(WaterIntake)\
+                      .filter_by(user_id=current_user.id)\
+                      .order_by(WaterIntake.timestamp.desc())\
+                      .first()
+    current_amount = existing.amount if existing else 0
+
+    return render_template(
+        'water.html',
+        form=form,
+        current_amount=current_amount
+    )
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
