@@ -3,7 +3,7 @@
 {% block title %}Трекер привычек{% endblock %}
 
 {% block content %}
-
+  <!-- Трекер воды -->
   <section class="water-tracker mb-4">
     <h5>Трекер воды</h5>
     <div class="progress">
@@ -17,7 +17,7 @@
   <section class="habits mb-5">
     <h5>Ваши привычки</h5>
 
-  
+    <!-- Форма добавления новой привычки -->
     <form method="post" class="row g-2 mb-4">
       {{ habit_form.hidden_tag() }}
       <div class="col-auto flex-grow-1">
@@ -47,14 +47,14 @@
                 {% endfor %}
               </div>
               <div class="card-body text-center">
-            
+                <!-- Кнопка «Выполнено» -->
                 <form method="post"
                       action="{{ url_for('mark_habit', habit_id=habit.id) }}"
                       class="d-inline btn-action"
                       data-action="done">
                   <button class="btn btn-sm btn-outline-success">Выполнено</button>
                 </form>
-             
+                <!-- Кнопка «Пропустить» -->
                 <form method="post"
                       action="{{ url_for('mark_habit', habit_id=habit.id) }}"
                       class="d-inline ms-2 btn-action"
@@ -71,7 +71,7 @@
     {% endif %}
   </section>
 
-
+  <!-- Статистика и достижения -->
   <section class="mt-5">
     <h5>Статистика</h5>
     <div class="row">
@@ -102,6 +102,7 @@
     </div>
   </section>
 
+  <!-- JS для моментального обновления кружков -->
   <script>
     document.querySelectorAll('.btn-action').forEach(form => {
       form.addEventListener('submit', function(e) {

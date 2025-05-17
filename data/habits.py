@@ -14,7 +14,7 @@ class habit1(SqlAlchemyBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     name = Column(String, nullable=False)
-    created_date = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_date = Column(DateTime, default=datetime.today(), nullable=False)
 
     days = relationship(
         'HabitDay',
@@ -26,7 +26,6 @@ class habit1(SqlAlchemyBase):
     user = relationship('User', back_populates='habits')
 
     def mark_done(self, mark_date: date):
-        """Пометить дату выполненной или добавить новую запись."""
         for d in self.days:
             if d.date == mark_date:
                 d.status = DayStatus.done
@@ -34,7 +33,6 @@ class habit1(SqlAlchemyBase):
         self.days.append(HabitDay(date=mark_date, status=DayStatus.done))
 
     def mark_skipped(self, mark_date: date):
-        """Пометить дату пропущенной или добавить новую запись."""
         for d in self.days:
             if d.date == mark_date:
                 d.status = DayStatus.skipped

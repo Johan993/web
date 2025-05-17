@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h5>Потребление воды за последнюю неделю</h5>
+  <canvas id="waterChart" height="100"></canvas>
+
+  <h5 class="mt-5">Процент выполненных привычек</h5>
+  <canvas id="habitChart" height="100"></canvas>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // график воды
+  new Chart(
+    document.getElementById('waterChart'),
+    {
+      type: 'bar',
+      data: {
+        labels: {{ water_labels|tojson }},
+        datasets: [{
+          label: 'мл воды',
+          data: {{ water_data|tojson }},
+          backgroundColor: 'rgba(54, 162, 235, 0.5)'
+        }]
+      },
+      options: { scales: { y: { beginAtZero: true } } }
+    }
+  );
+
+  // график привычек (горизонтальный)
+  new Chart(
+    document.getElementById('habitChart'),
+    {
+      type: 'bar',
+      data: {
+        labels: {{ habit_labels|tojson }},
+        datasets: [{
+          label: '% выполнения',
+          data: {{ habit_data|tojson }},
+          backgroundColor: 'rgba(75, 192, 192, 0.5)'
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        scales: { x: { beginAtZero: true, max: 100 } }
+      }
+    }
+  );
+</script>
+{% endblock %}
