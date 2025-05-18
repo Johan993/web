@@ -54,11 +54,16 @@ def index():
             db_sess.commit()
             return redirect(url_for('index'))
 
-        water = db_sess.query(WaterIntake)\
-                       .filter_by(user_id=current_user.id)\
-                       .order_by(WaterIntake.timestamp.desc())\
-                       .first()
-        water_amount = water.amount if water else 0
+        today = date.today()
+        water_amount = (
+            db_sess.query(func.sum(WaterIntake.amount))
+            .filter(
+                WaterIntake.user_id == current_user.id,
+                func.date(WaterIntake.timestamp) == today
+            )
+            .scalar()
+        )
+        water_amount = water_amount or 0
         water_goal = 2000
 
         user_habits = (
@@ -73,8 +78,6 @@ def index():
         for h in user_habits:
             delta = (today - h.created_date.date()).days
             today_idx = delta if 0 <= delta < len(h.days) else None
-            for d in h.days:
-                d.status = d.status.value
             habits.append((h, today_idx))
 
         achievements = []

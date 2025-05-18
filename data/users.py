@@ -2,13 +2,13 @@ import datetime
 import sqlalchemy
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
-from .db_session import SqlAlchemyBase
+from .db_session import SqlAlchemyBase, create_session
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy_serializer import SerializerMixin
+import secrets
 
 class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'users'
-
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     surname = sqlalchemy.Column(sqlalchemy.String, nullable=True)
@@ -19,6 +19,10 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     email = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     modified_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
+
+    telegram_id = sqlalchemy.Column(sqlalchemy.BigInteger, unique=True, nullable=True)
+    link_token = sqlalchemy.Column(sqlalchemy.String, unique=True, nullable=True)
+
     habits = relationship('habit1', back_populates='user')
 
     def set_password(self, password):
@@ -26,3 +30,14 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
+
+    def get_link_token(self):
+        if not self.link_token:
+            self.link_token = secrets.token_urlsafe(16)
+            db_sess = create_session()
+            try:
+                db_sess.add(self)
+                db_sess.commit()
+            finally:
+                db_sess.close()
+        return self.link_token

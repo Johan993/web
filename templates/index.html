@@ -34,13 +34,17 @@
               <div class="habit-calendar p-3">
                 {% for i in range(28) %}
                   {% set status = habit.days and habit.days[i] %}
+                  {% if status %}
                   <span
-                    class="me-1 mb-1 d-inline-block habit-day
-                           {{ 'done' if status == 'done'
-                              else 'skipped' if status == 'skipped'
-                              else '' }}"
-                    data-index="{{ i }}">
+                  class="me-1 mb-1 d-inline-block habit-day
+                          {{ 'done' if status.status.value == 'done'
+                           else 'skipped' if status.status.value == 'skipped'
+                            else '' }}"
+                  data-index="{{ i }}">
                   </span>
+                {% else %}
+                  <span class="me-1 mb-1 d-inline-block habit-day" data-index="{{ i }}"></span>
+                {% endif %}
                 {% endfor %}
               </div>
               <div class="card-body text-center">
@@ -64,36 +68,6 @@
     {% else %}
       <p class="text-muted">У вас пока нет привычек. Добавьте первую выше!</p>
     {% endif %}
-  </section>
-
-  <section class="mt-5">
-    <h5>Статистика</h5>
-    <div class="row">
-      <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h6>График выполнения</h6>
-            <div id="chart-activity"
-                 style="height:200px; background:#f0f0f0;
-                        text-align:center; line-height:200px; color:#999;">
-              Здесь будет график
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h6>Достижения</h6>
-            <div class="d-flex flex-wrap gap-2">
-              {% for ach in achievements %}
-                <span class="badge bg-secondary">{{ ach }}</span>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
 
   <script>
