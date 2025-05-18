@@ -31,13 +31,3 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
 
-    def get_link_token(self):
-        if not self.link_token:
-            self.link_token = secrets.token_urlsafe(16)
-            db_sess = create_session()
-            try:
-                db_sess.add(self)
-                db_sess.commit()
-            finally:
-                db_sess.close()
-        return self.link_token

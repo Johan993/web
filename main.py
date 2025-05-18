@@ -19,16 +19,18 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-global_init('db/mars_explorer.db')
+global_init('db/customers.db')
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+
 @login_manager.user_loader
 def load_user(user_id):
     db_sess = create_session()
     return db_sess.query(User).get(user_id)
+
 
 @app.route('/', methods=['GET', 'POST'])
 @login_required
@@ -68,9 +70,9 @@ def index():
 
         user_habits = (
             db_sess.query(habit1)
-                   .filter(habit1.user_id == current_user.id)
-                   .order_by(habit1.created_date.desc())
-                   .all()
+            .filter(habit1.user_id == current_user.id)
+            .order_by(habit1.created_date.desc())
+            .all()
         )
 
         today = date.today()
@@ -108,6 +110,7 @@ def index():
     finally:
         db_sess.close()
 
+
 @app.route('/habit/<int:habit_id>/mark', methods=['POST'])
 @login_required
 def mark_habit(habit_id):
@@ -135,6 +138,7 @@ def mark_habit(habit_id):
     finally:
         db_sess.close()
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -154,6 +158,7 @@ def register():
             db_sess.close()
     return render_template('register.html', title='Регистрация', form=form)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -169,12 +174,14 @@ def login():
             db_sess.close()
     return render_template('login.html', title='Вход', form=form)
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash('Вы вышли из аккаунта.', 'info')
     return redirect(url_for('login'))
+
 
 @app.route('/water', methods=['GET', 'POST'])
 @login_required
@@ -192,10 +199,10 @@ def water():
             db_sess.commit()
             return redirect(url_for('index'))
 
-        existing = db_sess.query(WaterIntake)\
-                          .filter_by(user_id=current_user.id)\
-                          .order_by(WaterIntake.timestamp.desc())\
-                          .first()
+        existing = db_sess.query(WaterIntake) \
+            .filter_by(user_id=current_user.id) \
+            .order_by(WaterIntake.timestamp.desc()) \
+            .first()
         current_amount = existing.amount if existing else 0
 
         return render_template('water.html', form=form, current_amount=current_amount)
@@ -229,8 +236,8 @@ def stats():
 
         habits = (
             db_sess.query(habit1)
-                   .filter(habit1.user_id == current_user.id)
-                   .all()
+            .filter(habit1.user_id == current_user.id)
+            .all()
         )
         habit_labels = []
         habit_data = []
@@ -249,6 +256,7 @@ def stats():
         )
     finally:
         db_sess.close()
+
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
